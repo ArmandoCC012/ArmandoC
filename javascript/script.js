@@ -9,7 +9,7 @@
 
     if(n==mi_nombre && c==mi_contra) 
         {
-        window.location.href="menu_enlace/inicio.html"; 
+        window.location.href="menu_enlace1/inicio.html"; 
         } 
     else 
     {
