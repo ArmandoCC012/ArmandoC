@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITEC FE Y ALEGRÍA - POTOSÍ</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root{--bs-primary:#d90429;--bs-primary-rgb:217,4,41}
+        html{scroll-behavior:smooth}
+        body{background-color:#f8f9fa;color:#212529;font-family:'Lato',sans-serif;line-height:1.7}
+        h1,h2,h3,h4,h5,h6,.navbar-brand,.btn{font-family:'Montserrat',sans-serif;font-weight:700}
+        .navbar{box-shadow:0 .125rem .25rem rgba(0,0,0,.075)!important}
+        .section-title{padding-top:4rem;padding-bottom:2rem;text-align:center}
+        .footer{background-color:#212529;color:#f8f9fa}
+        .hidden{display:none}
+        .nav-link.active{color:var(--bs-primary)!important;font-weight:600}
+        .btn-primary{--bs-btn-bg:var(--bs-primary);--bs-btn-border-color:var(--bs-primary);--bs-btn-hover-bg:#b80323;--bs-btn-hover-border-color:#a8031f}
+        .text-primary{color:var(--bs-primary)!important}
+        .feature-icon,.step-number{background-color:var(--bs-primary);display:inline-flex;align-items:center;justify-content:center;width:4rem;height:4rem;font-size:2rem;color:white;border-radius:50%;margin-bottom:1rem}
+        .accordion-button:not(.collapsed){background-color:rgba(var(--bs-primary-rgb),.1);color:var(--bs-primary)}
+        #heroCarousel .carousel-item{height:30vh;min-height:400px;background-size:cover;background-position:center}
+        .carousel-caption{position:absolute;right:15%;bottom:1.25rem;left:15%;padding:3rem 1rem;color:#fff;text-align:center;background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+        .carousel-caption h1{font-size:3rem;text-shadow:2px 2px 4px rgba(0,0,0,.7)}
+        .carousel-caption p{text-shadow:1px 1px 2px rgba(0,0,0,.7)}
+        .gallery-item{display:block;overflow:hidden;border-radius:.5rem;box-shadow:0 .25rem .5rem rgba(0,0,0,.075)}
+        .gallery-item img{width:100%;height:250px;object-fit:cover;transition:transform .4s ease}
+        .gallery-item:hover img{transform:scale(1.1)}
+        #galleryModal .modal-content{background-color:transparent;border:none}
+        #galleryModal .btn-close{position:absolute;top:1rem;right:1rem;z-index:10;filter:invert(1) grayscale(100%) brightness(200%)}
+        @media (max-width:767.98px){
+            .carousel-caption{padding:2rem 1rem}
+            .carousel-caption h1{font-size:1.8rem}
+            .carousel-caption .lead{font-size:1rem;display:none}
+            .carousel-caption .btn{font-size:.8rem;padding:.5rem 1rem}
+        }
+        /* ... tus otros estilos ... */
+
+/* --- ESTILOS PARA EL BOTÓN BACK TO TOP --- */
+#backToTopBtn {
+    position: fixed; /* Lo mantiene en su lugar al hacer scroll */
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    z-index: 1000; /* Se asegura de que esté por encima de otros elementos */
+    opacity: 0; /* Empieza invisible para la animación */
+    transition: opacity 0.4s, transform 0.4s; /* Animación suave */
+}
+
+#backToTopBtn.show {
+    display: flex; /* Lo hace visible */
+    opacity: 1; /* Lo hace opaco */
+}
+
+#backToTopBtn:hover {
+    transform: translateY(-5px); /* Efecto de "levantarse" al pasar el cursor */
+}
+        #gallery-filters .btn.active {
+    background-color: var(--bs-primary);
+    color: white;
+    }
+
+.gallery-item-wrapper {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.gallery-item-wrapper.hide {
+    transform: scale(0.8);
+    opacity: 0;
+    display: none; /* Se necesita para que no ocupe espacio */
+}
+    #progressBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 5px; /* Grosor de la barra */
+    background-color: var(--bs-primary); /* Color rojo de Fe y Alegría */
+    width: 0%; /* Empieza con ancho 0 */
+    z-index: 1050; /* Un z-index alto para que esté por encima del navbar */
+    transition: width 0.1s linear; /* Animación sutil para el cambio de ancho */
+    }
+    /* --- ESTILOS PARA MICRO-ANIMACIONES Y HOVERS --- */
+
+/* 1. Efecto general de transición para suavizar todos los cambios */
+.btn, .card, .feature-icon, .nav-link {
+    transition: all 0.3s ease-in-out;
+}
+
+/* 2. Efecto para los botones al pasar el cursor */
+.btn:hover {
+    transform: translateY(-3px); /* Levanta el botón ligeramente */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Añade una sombra más pronunciada */
+}
+
+/* 3. Efecto para las tarjetas (programas, testimonios, noticias) */
+.card:hover {
+    transform: translateY(-10px); /* Levanta la tarjeta más notablemente */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12); /* Sombra más difusa y grande */
+}
+
+/* 4. Efecto para los iconos de la "Promesa Educativa" */
+.feature-icon:hover {
+    transform: scale(1.1) rotate(5deg); /* Crece un 10% y rota ligeramente */
+    box-shadow: 0 6px 12px rgba(var(--bs-primary-rgb), 0.4); /* Sombra del color primario */
+}
+
+/* Asegurarnos de que el tooltip no interfiera con el hover del icono */
+.feature-icon {
+    /* ... tus estilos existentes ... */
+    position: relative; /* Necesario para que el tooltip se posicione correctamente */
+    z-index: 1;
+}
+
+/* --- FIN DE NUEVOS ESTILOS --- */
+    </style>
+</head>
+<body>
+    <div id="progressBar"></div>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showSection('inicio',this)">
+    <img src="logo.png" alt="Logo ITEC" style="height:36px;vertical-align:middle;margin-right:10px;">
+    ITEC FE Y ALEGRÍA
+</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#inicio" onclick="showSection('inicio',this)">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#programas" onclick="showSection('programas',this)">Programas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#mision" onclick="showSection('mision',this)">Nuestra Misión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#galeria" onclick="showSection('galeria',this)">Vida Estudiantil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#admisiones" onclick="showSection('admisiones',this)">Admisiones y Contacto</a></li>
+                    <li class="nav-item ms-lg-3">
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="bi bi-person-circle me-1"></i> Portal Estudiantil
+                </button>
+            </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop')">
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4">Educación que Transforma Vidas</h1>
+                    <p class="lead">Formamos profesionales con excelencia técnica, valores sólidos y un profundo compromiso social.</p>
+                    <button class="btn btn-primary btn-lg mx-2" onclick="showSection('programas')">Explorar Programas</button>
+                    <button class="btn btn-outline-light btn-lg mx-2" onclick="showSection('admisiones')">Únete a Nosotros</button>
+                </div>
+            </div>
+            <div class="carousel-item" style="background-image:url('https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=2070&auto=format&fit=crop')">
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4">Conviértete en un Profesional en Sistemas</h1>
+                    <p class="lead">Domina el desarrollo de software y las redes en nuestra carrera de Sistemas Informáticos.</p>
+                    <button class="btn btn-primary btn-lg" onclick="showSection('programas')">Ver Carrera</button>
+                </div>
+            </div>
+            <div class="carousel-item" style="background-image:url('https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+                <div class="carousel-caption text-center">
+                    <h1 class="display-4">Nuestra Misión en Acción</h1>
+                    <p class="lead">Participa en proyectos que generan un impacto real y positivo en nuestra comunidad.</p>
+                    <button class="btn btn-primary btn-lg" onclick="showSection('mision')">Conoce Nuestros Proyectos</button>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+    </header>
+
+    <main class="container">
+        <div id="inicio">
+            <div class="section-title"><h2>Nuestra Promesa Educativa</h2><p class="lead">Más que un título, una formación para la vida.</p></div>
+            <div class="row g-4 text-center">
+    
+    <div class="col-lg-4" data-aos="fade-up">
+        <div class="feature-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Más que enseñar, nos dedicamos a guiar y apoyar a cada estudiante en su camino.">
+            <i class="bi bi-heart-fill"></i>
+        </div>
+        <h4>Educadores Comprometidos</h4>
+        <p>Un equipo docente que no solo enseña, sino que acompaña y cree en el potencial de cada estudiante.</p>
+    </div>
+    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Preparamos a nuestros estudiantes con habilidades prácticas y demandadas por el mercado laboral actual.">
+            <i class="bi bi-tools"></i>
+        </div>
+        <h4>Formación para la Vida y el Trabajo</h4>
+        <p>Combinamos la excelencia técnica con el desarrollo de habilidades humanas para enfrentar cualquier desafío.</p>
+    </div>
+    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="feature-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Una educación enfocada en la empleabilidad y el emprendimiento para un futuro próspero.">
+            <i class="bi bi-lightbulb-fill"></i>
+        </div>
+        <h4>Un Futuro con Dignidad</h4>
+        <p>Te damos las herramientas para construir una carrera profesional que te permita crecer y aportar a la sociedad.</p>
+    </div>
+</div>
+            <div id="stats-counter" class="py-5 my-5" style="background-color: #e9ecef;">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-md-4" data-aos="fade-up">
+                            <i class="bi bi-mortarboard-fill display-3 text-primary"></i>
+                            <h3 class="display-4 fw-bold mt-2" id="graduadosCounter">0</h3>
+                            <p class="lead">Estudiantes Graduados</p>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                            <i class="bi bi-building-fill-gear display-3 text-primary"></i>
+                            <h3 class="display-4 fw-bold mt-2" id="carrerasCounter">0</h3>
+                            <p class="lead">Carreras Técnicas</p>
+                        </div>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                            <i class="bi bi-patch-check-fill display-3 text-primary"></i>
+                            <h3 class="display-4 fw-bold mt-2" id="experienciaCounter">0</h3>
+                            <p class="lead">Años de Experiencia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-title mt-5"><h2>Voces de Nuestra Comunidad</h2></div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up"><div class="card h-100 shadow-sm"><div class="card-body text-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRsVD9MIdAreU0FKUtwbMFIAEUJzwlsLeIUw&s" class="rounded-circle mb-3"><blockquote class="blockquote mb-0"><p>"Aquí no solo aprendí a programar, aprendí a trabajar en equipo y a creer en mis ideas. Fe y Alegría me abrió las puertas a un futuro que no creía posible."</p><footer class="blockquote-footer mt-2">Juanito Cueto, Egresado de Sistemas</footer></blockquote></div></div></div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200"><div class="card h-100 shadow-sm"><div class="card-body text-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJlWaSMFfulxnjy5Ddae9zE3R6pFvmEh4_dg&s" class="rounded-circle mb-3"><blockquote class="blockquote mb-0"><p>"Como madre, ver el compromiso de los profesores con mi hijo me da una tranquilidad inmensa. Es una educación con valores que se sienten todos los días."</p><footer class="blockquote-footer mt-2">Juana Condori, Madre de Familia</footer></blockquote></div></div></div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400"><div class="card h-100 shadow-sm"><div class="card-body text-center"><img src="https://qph.cf2.poecdn.net/main-thumb-pb-5881908-200-ifvnipikgwnclriylapdsuyjxococnrj.jpeg" class="rounded-circle mb-3"><blockquote class="blockquote mb-0"><p>"Ser educador en Fe y Alegría es un privilegio. Ves la transformación de los jóvenes día a día y sabes que estás contribuyendo a algo más grande."</p><footer class="blockquote-footer mt-2">Lic. Willy Cueto, Docente</footer></blockquote></div></div></div>
+            </div>
+        </div>
+
+        <div id="programas" class="hidden">
+            <div class="section-title"><h1>Programas Académicos</h1></div>
+            <div class="row g-4">
+                <div class="col-lg-4" data-aos="fade-up"><div class="card h-100 shadow-sm"><img src="https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=2070&auto=format&fit=crop" class="card-img-top"><div class="card-body d-flex flex-column"><h5 class="card-title">Sistemas Informáticos</h5><p class="card-text">Formación en desarrollo de software, administración de redes y bases de datos para un mundo digital.</p><button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#programModal" data-title="Sistemas Informáticos" data-description="Nuestra carrera de Sistemas Informáticos te prepara para los desafíos del mundo digital..." data-details="<ul><li>Malla Curricular: 6 Semestres</li></ul>">Ver detalles</button></div></div></div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200"><div class="card h-100 shadow-sm"><img src="https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?q=80&w=2070&auto=format&fit=crop" class="card-img-top"><div class="card-body d-lex flex-column"><h5 class="card-title">Contaduría General</h5><p class="card-text">Domina los principios contables, tributarios y de gestión financiera con un enfoque ético.</p><button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#programModal" data-title="Contaduría General" data-description="Conviértete en un experto en la gestión financiera y contable..." data-details="<ul><li>Malla Curricular: 6 Semestres</li></ul>">Ver detalles</button></div></div></div>
+                <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400"><div class="card h-100 shadow-sm"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop" class="card-img-top"><div class="card-body d-flex flex-column"><h5 class="card-title">Secretariado Ejecutivo</h5><p class="card-text">Desarrolla habilidades administrativas, de comunicación y gestión de oficinas modernas.</p><button type="button" class="btn btn-outline-primary mt-auto" data-bs-toggle="modal" data-bs-target="#programModal" data-title="Secretariado Ejecutivo" data-description="Este programa forma profesionales capaces de gestionar eficientemente las tareas administrativas..." data-details="<ul><li>Malla Curricular: 6 Semestres</li></ul>">Ver detalles</button></div></div></div>
+            </div>
+        </div>
+        
+        <div id="mision" class="hidden">
+            <div class="section-title"><h1>Nuestra Misión en Acción</h1><p class="lead">Creemos en una educación que transforma a la persona y a su comunidad.</p></div>
+            <div class="bg-white p-4 p-md-5 mb-5 rounded-3 shadow-sm" data-aos="fade-up"><p>En ITEC Fe y Alegría, nuestro compromiso va más allá de las aulas. Fomentamos la participación activa de nuestros estudiantes en proyectos que generan un impacto positivo en la sociedad, desarrollando no solo sus habilidades técnicas, sino también su sentido de responsabilidad, solidaridad y liderazgo.</p></div>
+            <h3 class="text-center mb-4">Proyectos Destacados</h3>
+            <div class="row gy-4">
+                <div class="col-12" data-aos="fade-up"><div class="bg-white p-4 rounded-3 shadow-sm"><div class="row g-4 align-items-center"><div class="col-md-4"><img src="https://images.unsplash.com/photo-1421789665209-c9b2a435e3dc?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3"></div><div class="col-md-8"><h5>Programa "Siembra Vida"</h5><p>Cada año, estudiantes y docentes colaboran con comunidades locales para reforestar áreas vulnerables...</p><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#programModal" data-title="Programa 'Siembra Vida'" data-description="El programa de reforestación 'Siembra Vida' es una de nuestras iniciativas más emblemáticas..." data-details="<ul><li><strong>Próxima jornada:</strong> Primavera 2024</li></ul>">Saber más</button></div></div></div></div>
+                <div class="col-12" data-aos="fade-up"><div class="bg-white p-4 rounded-3 shadow-sm"><div class="row g-4 align-items-center"><div class="col-md-4"><img src="https://images.unsplash.com/photo-1738440702720-2a57e6ce2b0b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid rounded-3"></div><div class="col-md-8"><h5>Alfabetización Digital para Adultos Mayores</h5><p>Estudiantes de Sistemas imparten talleres gratuitos para ayudar a los adultos mayores a usar la tecnología...</p><button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#programModal" data-title="Alfabetización Digital" data-description="Este proyecto busca cerrar la brecha digital y conectar a las generaciones..." data-details="<ul><li><strong>Frecuencia:</strong> Último sábado de cada mes.</li></ul>">Saber más</button></div></div></div></div>
+            </div>
+                        <div class="section-title mt-5">
+                <h2>Últimas Noticias y Eventos</h2>
+                <p class="lead">Mantente al día con las actividades de nuestra comunidad.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="Noticia 1">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">EVENTO</span>
+                            <h5 class="card-title">Exitosa Feria de Proyectos de Fin de Semestre</h5>
+                            <p class="card-text text-muted">15 de Noviembre, 2024</p>
+                            <p class="card-text">Nuestros estudiantes presentaron soluciones innovadoras ante un jurado de expertos y empresas locales...</p>
+                            <a href="#" class="text-primary fw-bold">Leer más <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070" class="card-img-top" alt="Noticia 2">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">NOTICIA</span>
+                            <h5 class="card-title">Convenio con la Cámara de Industria para Pasantías</h5>
+                            <p class="card-text text-muted">01 de Noviembre, 2024</p>
+                            <p class="card-text">Firmamos un importante acuerdo que garantizará oportunidades de pasantías para nuestros mejores estudiantes...</p>
+                            <a href="#" class="text-primary fw-bold">Leer más <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=2070" class="card-img-top" alt="Noticia 3">
+                        <div class="card-body">
+                            <span class="badge bg-warning text-dark mb-2">TALLER</span>
+                            <h5 class="card-title">Inscripciones Abiertas para el Taller de Liderazgo</h5>
+                            <p class="card-text text-muted">28 de Octubre, 2024</p>
+                            <p class="card-text">Desarrolla tus habilidades de liderazgo y trabajo en equipo en nuestro taller intensivo de fin de semana...</p>
+                            <a href="#" class="text-primary fw-bold">Leer más <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="galeria" class="hidden">
+            <div class="section-title"><h1>Vida Estudiantil en ITEC</h1></div>
+            <div id="gallery-filters" class="d-flex justify-content-center flex-wrap mb-4" data-aos="fade-up">
+                <button class="btn btn-outline-primary m-1 active" onclick="filterGallery('all')">Todos</button>
+                <button class="btn btn-outline-primary m-1" onclick="filterGallery('eventos')">Eventos</button>
+                <button class="btn btn-outline-primary m-1" onclick="filterGallery('instalaciones')">Instalaciones</button>
+                <button class="btn btn-outline-primary m-1" onclick="filterGallery('proyectos')">Proyectos</button>
+            </div>
+        <div class="row g-4">
+            
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="eventos" data-aos="fade-up">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070" alt="Día de Graduación">
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="instalaciones" data-aos="fade-up" data-aos-delay="100">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070">
+                    <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070" alt="Estudiantes en el campus">
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="proyectos" data-aos="fade-up" data-aos-delay="200">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://plus.unsplash.com/premium_photo-1749747566115-ad1db55754ee?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+                    <img src="https://plus.unsplash.com/premium_photo-1749747566115-ad1db55754ee?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Taller de colaboración">
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="eventos" data-aos="fade-up">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070" alt="Clase en el auditorio">
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="instalaciones" data-aos="fade-up" data-aos-delay="100">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070">
+                    <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070" alt="Laboratorio de computación">
+                </a>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 gallery-item-wrapper" data-category="proyectos" data-aos="fade-up" data-aos-delay="200">
+                <a href="#" class="gallery-item" data-bs-toggle="modal" data-bs-target="#galleryModal" data-image-src="https://scontent.flpb2-2.fna.fbcdn.net/v/t39.30808-6/495273483_1289768242956383_1783202016190514595_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=tldPYtp5Hh8Q7kNvwFWg-nt&_nc_oc=Adlbg4wnRfHe5y2VlaYC1NIcygFmPzVf_JwOL-Le9uRLBJ262ZwSCF8tPqMP3QRYo-s&_nc_zt=23&_nc_ht=scontent.flpb2-2.fna&_nc_gid=gk43Mu7OSp54FEaktkUxTw&oh=00_AfM7sgTuxMhNFeEbEZ1ZMfIBfBhoy0LE8ZwubFsueOIFSQ&oe=685CCD0C">
+                    <img src="https://scontent.flpb2-2.fna.fbcdn.net/v/t39.30808-6/495273483_1289768242956383_1783202016190514595_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=tldPYtp5Hh8Q7kNvwFWg-nt&_nc_oc=Adlbg4wnRfHe5y2VlaYC1NIcygFmPzVf_JwOL-Le9uRLBJ262ZwSCF8tPqMP3QRYo-s&_nc_zt=23&_nc_ht=scontent.flpb2-2.fna&_nc_gid=gk43Mu7OSp54FEaktkUxTw&oh=00_AfM7sgTuxMhNFeEbEZ1ZMfIBfBhoy0LE8ZwubFsueOIFSQ&oe=685CCD0C" alt="Fachada del instituto">
+                </a>
+            </div>
+        </div>
+        </div>
+
+        <div id="admisiones" class="hidden">
+            <div class="section-title"><h1>Admisiones y Contacto</h1></div>
+            <div class="row g-5">
+                <div class="col-lg-8" data-aos="fade-right">
+                    <div class="bg-white p-4 p-md-5 rounded-3 shadow-sm">
+                        <h4 class="mb-4">Pasos para Postular</h4>
+                        <div class="d-flex align-items-start mb-4"><div class="step-number me-4">1</div><div><h5>Reúne los Requisitos</h5><p>Asegúrate de tener todos los documentos necesarios listos.</p></div></div>
+                        <div class="d-flex align-items-start mb-4"><div class="step-number me-4">2</div><div><h5>Completa el Formulario</h5><p>Visita nuestra oficina de admisiones para recoger y llenar el formulario de postulación oficial.</p></div></div>
+                        <div class="d-flex align-items-start mb-4"><div class="step-number me-4">3</div><div><h5>Entrevista y Evaluación</h5><p>Participa en una breve entrevista con el coordinador de carrera.</p></div></div>
+                        <div class="d-flex align-items-start"><div class="step-number me-4">4</div><div><h5>Confirmación e Inscripción</h5><p>Una vez admitido, recibirás una notificación. Completa tu inscripción realizando el pago correspondiente.</p></div></div>
+                    </div>
+                </div>
+                <div class="col-lg-4" data-aos="fade-left">
+                    <div class="bg-light p-4 rounded-3">
+                        <h5 class="mb-3">Fechas Importantes</h5>
+                        <table class="table table-sm"><tbody><tr><td>Postulaciones</td><td class="text-end">15 Ene - 10 Feb</td></tr><tr><td>Publicación de Admitidos</td><td class="text-end">15 Feb</td></tr><tr><td>Inicio de Clases</td><td class="text-end">01 Mar</td></tr></tbody></table>
+                        <hr class="my-4">
+                        <h5 class="mb-3">Información de Contacto</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Calle Ficticia 123, Potosí</li>
+                            <li class="mb-3"><i class="bi bi-telephone-fill text-primary me-2"></i>+591 2 622-XXXX</li>
+                            <li class="mb-3"><i class="bi bi-envelope-fill text-primary me-2"></i>contacto@itec.edu.bo</li>
+                            <li class="mb-3"><i class="bi bi-clock-fill text-primary me-2"></i>Lun-Vie: 08:30 - 18:00</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                        <div class="text-center bg-white p-4 mt-5 rounded-3 shadow-sm" data-aos="fade-up">
+                <h4 class="fw-normal">¿Listo para dar el siguiente paso?</h4>
+                <p>Completa nuestro formulario de pre-inscripción y nos pondremos en contacto contigo.</p>
+                <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#programModal"
+                        data-title="Formulario de Pre-inscripción"
+                        data-description="Por favor, completa los siguientes datos para iniciar tu proceso de admisión. Un miembro de nuestro equipo te contactará para guiarte en los siguientes pasos."
+                        data-details='
+                            <form >
+                                <div class="mb-3"><label class="form-label">Nombre Completo</label><input type="text" class="form-control"></div>
+                                <div class="mb-3"><label class="form-label">Correo Electrónico</label><input type="email" class="form-control"></div>
+                                <div class="mb-3"><label class="form-label">Número de Celular</label><input type="tel" class="form-control"></div>
+                                <div class="mb-3"><label class="form-label">Carrera de Interés</label><select class="form-select"><option selected>Elige una carrera...</option><option>Sistemas Informáticos</option><option>Contaduría General</option><option>Secretariado Ejecutivo</option></select></div>
+                                <button type="submit" class="btn btn-primary w-100" onclick="alert(`¡Gracias! Tu pre-inscripción ha sido enviada.`)">Enviar Pre-inscripción</button>
+                            </form>
+                        '>
+                    Pre-inscribirme en Línea
+                </button>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer mt-5 py-4">
+        <div class="container text-center"><p>© 2025 ITEC FE Y ALEGRÍA - POTOSÍ. Educación Popular para un Mundo más Justo.</p></div>
+    </footer>
+    
+    <a href="#" id="backToTopBtn" class="btn btn-primary rounded-circle shadow">
+    <i class="bi bi-arrow-up"></i>
+    </a>
+
+    <div class="modal fade" id="programModal" tabindex="-1">
+        <div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="programModalLabel"></h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><p id="modal-description"></p><h6 class="mt-4">Detalles:</h6><div id="modal-details"></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button><button type="button" class="btn btn-primary">Inscribirme</button></div></div></div>
+    </div>
+
+    <div class="modal fade" id="galleryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl"><div class="modal-content"><div class="modal-body"><button type="button" class="btn-close" data-bs-dismiss="modal"></button><img src="" class="d-block w-100" id="modal-image" alt="Imagen ampliada"></div></div></div>
+    </div>
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Portal Estudiantil</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted">Esta es una simulación del portal de acceso para estudiantes y docentes.</p>
+            <form>
+              <div class="mb-3">
+                <label for="login-email" class="form-label">Correo Institucional</label>
+                <input type="email" class="form-control" id="login-email">
+              </div>
+              <div class="mb-3">
+                <label for="login-password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="login-password">
+              </div>
+              <button type="submit" class="btn btn-primary w-100" onclick="event.preventDefault(); alert('Funcionalidad en desarrollo.')">Ingresar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({duration:800,once:true});
+            const backToTopButton = document.getElementById('backToTopBtn');
+
+    window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    };
+
+    backToTopButton.addEventListener('click', function(e) {
+        e.preventDefault(); // Evita que el enlace '#' salte
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+            function filterGallery(category) {
+        const galleryItems = document.querySelectorAll('.gallery-item-wrapper');
+        const filterButtons = document.querySelectorAll('#gallery-filters .btn');
+
+        // Actualizar el botón activo
+        filterButtons.forEach(button => {
+            // Comprueba si el texto del botón coincide con la categoría
+            if (button.innerText.toLowerCase() === category || (category === 'all' && button.innerText.toLowerCase() === 'todos')) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+        });
+
+        // Filtrar los items de la galería
+        galleryItems.forEach(item => {
+            // Primero, removemos 'hide' para que la animación de entrada funcione si estaba oculto
+            item.classList.remove('hide');
+
+            if (category === 'all' || item.dataset.category === category) {
+                // No hacemos nada, se queda visible
+            } else {
+                // Ocultamos los que no coinciden
+                item.classList.add('hide');
+            }
+        });
+    }
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            // ===== NUEVO CÓDIGO PARA LA BARRA DE PROGRESO DE SCROLL =====
+    window.addEventListener('scroll', updateProgressBar);
+
+    function updateProgressBar() {
+        const progressBar = document.getElementById('progressBar');
+        
+        // Calculamos el porcentaje de scroll
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (scrollTop / scrollHeight) * 100;
+        
+        // Actualizamos el ancho de la barra
+        progressBar.style.width = scrolled + "%";
+    }
+    // ===== FIN DEL NUEVO CÓDIGO =====
+        function showSection(t,e){document.querySelectorAll('main > div').forEach(e=>e.classList.add('hidden'));document.getElementById(t)?.classList.remove('hidden');document.querySelectorAll('.nav-link').forEach(e=>e.classList.remove('active'));(e||document.querySelector(`.nav-link[href="#${t}"]`))?.classList.add('active')}
+        document.getElementById('programModal').addEventListener('show.bs.modal',function(e){const t=e.relatedTarget;this.querySelector('.modal-title').textContent=t.getAttribute('data-title');this.querySelector('#modal-description').textContent=t.getAttribute('data-description');this.querySelector('#modal-details').innerHTML=t.getAttribute('data-details')});
+        document.getElementById('galleryModal').addEventListener('show.bs.modal',function(e){this.querySelector('#modal-image').src=e.relatedTarget.getAttribute('data-image-src')});
+        document.addEventListener('DOMContentLoaded',()=>showSection('inicio'));
+            const statsSection = document.getElementById('stats-counter');
+    let countersStarted = false;
+
+    const options = {
+        root: null, // el viewport
+        threshold: 0.5 // se activa cuando el 50% de la sección es visible
+    };
+
+    const observer = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !countersStarted) {
+                // Iniciar los contadores
+                const graduados = new countUp.CountUp('graduadosCounter', 500, { enableScrollSpy: true, scrollSpyOnce: true, a:'+' });
+                const carreras = new countUp.CountUp('carrerasCounter', 3, { enableScrollSpy: true, scrollSpyOnce: true });
+                const experiencia = new countUp.CountUp('experienciaCounter', 20, { enableScrollSpy: true, scrollSpyOnce: true, a: '+' });
+
+                graduados.start();
+                carreras.start();
+                experiencia.start();
+                
+                countersStarted = true; // Asegura que solo se ejecute una vez
+            }
+        });
+    }, options);
+
+    observer.observe(statsSection);
+    </script>
+</body>
+</html>
